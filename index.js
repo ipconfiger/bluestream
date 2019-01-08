@@ -20,19 +20,17 @@ let BsCharacteristic = function() {
 
   this._value = new Buffer(0);
   this._updateValueCallback = null;
-  this.idx = 0;
 };
 
 util.inherits(BsCharacteristic, BlenoCharacteristic);
 
 BsCharacteristic.prototype.onReadRequest = function(offset, callback) {
   console.log('EchoCharacteristic - onReadRequest: value = ' + this._value.toString('hex'));
-  callback(this.RESULT_SUCCESS, new Buffer(this.idx));
+  callback(this.RESULT_SUCCESS, new Buffer(0));
 };
 
 BsCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
-  this.idx+=1;
   console.log('EchoCharacteristic - onWriteRequest: value = ' + this._value.toString('hex'));
   if (this._updateValueCallback) {
     console.log('EchoCharacteristic - onWriteRequest: notifying');
