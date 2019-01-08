@@ -2,12 +2,15 @@ let commandLineArgs = require('command-line-args');
 let util = require('util');
 let bleno = require('bleno');
 let BlenoPrimaryService = bleno.PrimaryService;
+let redis = require("redis")
 
 
 let optionDefinitions = [
     { name: 'host', type: String, multiple: false, defaultOption: true }
 ];
 let options = commandLineArgs(optionDefinitions);
+
+let client = redis.createClient(options['host']);
 
 let BlenoCharacteristic = bleno.Characteristic;
 
@@ -32,6 +35,7 @@ BsCharacteristic.prototype.onReadRequest = function(offset, callback) {
 BsCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
   console.log('EchoCharacteristic - onWriteRequest: value = ' + this._value.toString('hex'));
+  client.lpush('stream', this._value.toString('hex'));
   if (this._updateValueCallback) {
     console.log('EchoCharacteristic - onWriteRequest: notifying');
     this._updateValueCallback(this._value);
