@@ -28,7 +28,7 @@ util.inherits(BsCharacteristic, BlenoCharacteristic);
 BsCharacteristic.prototype.onReadRequest = function(offset, callback) {
   console.log('EchoCharacteristic - onReadRequest: value = ' + this._value.toString('hex'));
   this.idx+=1;
-  callback(this.RESULT_SUCCESS, this.idx);
+  callback(this.RESULT_SUCCESS, new Buffer(this.idx));
 };
 
 BsCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
