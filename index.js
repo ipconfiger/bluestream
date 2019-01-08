@@ -27,12 +27,12 @@ util.inherits(BsCharacteristic, BlenoCharacteristic);
 
 BsCharacteristic.prototype.onReadRequest = function(offset, callback) {
   console.log('EchoCharacteristic - onReadRequest: value = ' + this._value.toString('hex'));
-  this.idx+=1;
   callback(this.RESULT_SUCCESS, new Buffer(this.idx));
 };
 
 BsCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
+  this.idx+=1;
   console.log('EchoCharacteristic - onWriteRequest: value = ' + this._value.toString('hex'));
   if (this._updateValueCallback) {
     console.log('EchoCharacteristic - onWriteRequest: notifying');
