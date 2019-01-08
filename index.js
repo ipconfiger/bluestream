@@ -10,7 +10,7 @@ let optionDefinitions = [
 ];
 let options = commandLineArgs(optionDefinitions);
 
-let client = redis.createClient(options['host']);
+let client = redis.createClient('6379', options['host']);
 
 let BlenoCharacteristic = bleno.Characteristic;
 
